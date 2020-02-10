@@ -68,44 +68,42 @@
 							}
 							else {
 								foreach ($transactions as $key => $value) {
+									if($transactions[$key]['objet'] == "Hébergements") {
+										$nbNuit = date_diff(date_create($transactions[$key]['date_arrivee']),date_create($transactions[$key]['date_depart']))->format('%d');
+										if($nbNuit == 1) {
+											$nbNuit = $nbNuit.' nuit';
+										}
+										else {
+											$nbNuit = $nbNuit.' nuits';
+										}
+
+										$objet = $transactions[$key]['objet']." | ".$nbNuit;
+									}
+									else {
+										$objet = $transactions[$key]['objet'];		
+									}
+
+									switch ($transactions[$key]['statut']) {
+										case 0:
+											$statut = 'Saisie';
+											break;
+										case 1:
+											$statut = '✔';
+											break;
+										case 2:
+											$statut = '✘';
+											break;
+									}
 								?>
-									<tr data-id='<?php echo $transactions[$key]['id']; ?>' data-statut="<?php echo $transactions[$key]['statut']; ?>">
-										<td><?php echo $transactions[$key]['id']; ?></td>
-										<td><?php echo date('d/m/Y \à H:i:s',strtotime($transactions[$key]['date_saisie'])); ?></td>
-										<td><?php echo $transactions[$key]['nom']; ?></td>
-										<?php
-											if($transactions[$key]['objet'] == "Hébergements") {
-												$nbNuit = date_diff(date_create($transactions[$key]['date_arrivee']),date_create($transactions[$key]['date_depart']))->format('%d');
-												if($nbNuit == 1) {
-													$nbNuit = $nbNuit.' nuit';
-												}
-												else {
-													$nbNuit = $nbNuit.' nuits';
-												}
-
-												echo "<td>".$transactions[$key]['objet']." | ".$nbNuit."</td>";
-											}
-											else {
-												echo "<td>".$transactions[$key]['objet']."</td>";		
-											}
-
-											echo '<td>'.$transactions[$key]['type'].' | '.$transactions[$key]['montant'] .' €</td>';
-
-											switch ($transactions[$key]['statut']) {
-												case 0:
-													echo "<td>Saisie</td>";
-													break;
-												case 1:
-													echo "<td>✔</td>";
-													break;
-												case 2:
-													echo "<td>✘</td>";
-													break;
-											}
-										
-											echo '<td>'.$transactions[$key]['commentaire'].'</td>';
-								?>
-									</tr>
+								<tr data-id='<?php echo $transactions[$key]['id']; ?>' data-statut="<?php echo $transactions[$key]['statut']; ?>">
+									<td><?php echo $transactions[$key]['id']; ?></td>
+									<td><?php echo date('d/m/Y',strtotime($transactions[$key]['date_saisie'])); ?></td>
+									<td><?php echo $transactions[$key]['nom']; ?></td>
+									<td><?php echo $objet; ?></td>
+									<td><?php echo $transactions[$key]['type'].' | '.$transactions[$key]['montant'] .' €'; ?></td>
+									<td><?php echo $statut; ?></td>
+									<td><?php echo $transactions[$key]['commentaire']; ?></td>
+								</tr>
 								<?php
 								}
 							}

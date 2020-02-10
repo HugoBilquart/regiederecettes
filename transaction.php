@@ -516,7 +516,7 @@ function createDate($value) {
                     $('#etu_part').css('border','solid green');
                 }
 
-                if($('[name="objet"]').val() != null) {
+                if($('[name="objet"]').val() != "") {
                     if($('[name="objet"]').val() == 'Hébergements') {
                         if($('#date1').val() == '' || $('#date2').val() == '') {
                             $('#check_obj').text(`Veuillez renseigner les dates pour l'objet "Hébergements"`);

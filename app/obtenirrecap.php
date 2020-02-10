@@ -1,6 +1,7 @@
 <h2>Obtenir un récapitulatif des transactions</h2>
 <p>Remplissez le formulaire pour obtenir le récapitulatif que vous souhaitez</p>
 
+<!-- DEBUT Formulaire -->
 <form id="form-document" name="recap" method="POST">
     <!-- DEBUT Type de recapitulatif -->
     <div class="form_part row">
@@ -88,6 +89,7 @@
         <button type="button" class="btn btn-primary submit" id="search">Rechercher</button>
     </div>
 </form>
+<!-- FIN Formulaire -->
 
 <br/>
 
@@ -100,7 +102,7 @@
 
 <hr>
 
-<div class="return">
+<div class="return text-center">
     <a href="regiederecettes.php" class="btn btn-default">
         <i class="fa fa-bars"></i> Retourner au menu Regie de recettes
     </a>
