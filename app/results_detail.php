@@ -13,21 +13,21 @@
 
             $requete_traitement = $connex_pdo->prepare('UPDATE r_transactions SET statut = :statut, nom_traitement = :nom_traitement, date_traitement = :date_traitement ,commentaire = :commentaire WHERE id = :id');
             $requete_traitement->execute(array(
-                "statut" => $statut,
-                "nom_traitement" => $_SESSION['nom'],
-                "date_traitement" => date('Y-m-d H:i:s'),
-                "commentaire" => $_POST['commentaire'],
-                "id" => $_GET['n']
+                ":statut" => $statut,
+                ":nom_traitement" => $_SESSION['nom'],
+                ":date_traitement" => date('Y-m-d H:i:s'),
+                ":commentaire" => $_POST['commentaire'],
+                ":id" => $_GET['n']
             ));
         }
         else if(isset($_POST['rectifier'])) {
             $requete_traitement = $connex_pdo->prepare('UPDATE r_transactions SET statut = :statut, nom_traitement = :nom_traitement, date_traitement = :date_traitement ,commentaire = :commentaire WHERE id = :id');
             $requete_traitement->execute(array(
-                "statut" => 0,
-                "nom_traitement" => '',
-                "date_traitement" => NULL,
-                "commentaire" => '',
-                "id" => $_GET['n']
+                ":statut" => 0,
+                ":nom_traitement" => '',
+                ":date_traitement" => NULL,
+                ":commentaire" => '',
+                ":id" => $_GET['n']
             ));
         }
         
@@ -165,8 +165,8 @@
                     </div>
                     <br/>
                     <div class="text-center col-sm-">
-                        <input type="submit" class="btn submit" name="traitement" value="Valider">
-                        <input type="submit" class="btn submit" name="traitement" value="Annuler">
+                        <input type="submit" class="btn" name="traitement" value="Valider">
+                        <input type="submit" class="btn" name="traitement" value="Annuler">
                     </div>
                 <?php
             }
@@ -177,7 +177,7 @@
 
 <hr>
 
-<div class="return">
+<div class="return text-center">
     <a href="regiederecettes.php?action=1&traitee=0" class="btn btn-default">
         <i class="fa fa-bars"></i> Retourner à la liste des transactions
     </a>

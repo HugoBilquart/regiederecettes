@@ -70,7 +70,7 @@
 		function Header()
 		{
 			if($this->page == 1) {
-				$this->Image('images/logo.png',10,15,26.6,15.7,'PNG');
+				$this->Image('../img/docs/logo.png',10,15,26.6,15.7,'PNG');
 
 				$this->SetFont('Arial','B',10);
 				$this->Text(140,15,' - Infographie - ');
@@ -109,7 +109,8 @@
 				$this->SetXY($x + 40 ,$y - 6);
 				
 				$this->Cell(50,6,utf8_decode("     Titulaire du compte : "),0,2,'L');
-				$this->Cell(50,7,utf8_decode("     [                                              ]"),0,2,'L');
+				$this->Cell(50,7,utf8_decode("     [________________________________]"),0,2,'L');
+
 
 				
 				$this->Cell(50,13,utf8_decode("        N° du compte à créditer"),0,1,'L');
@@ -167,9 +168,9 @@
 
 			//$this->Cell(10,10,'Page '.$this->PageNo(),0,2,'C');
 
-			$this->Cell(0,5,utf8_decode('[                                ADRESSE                                      ]'),0,2,'L',0);
+			$this->Cell(0,5,utf8_decode('[_____________________________________________________________________________]'),0,2,'L',0);
 
-			$this->Cell(0,5,utf8_decode("Régie de recettes v5 - 2020 - Hugo BILQUART pour [          ]"),0,0,'L',0);
+			$this->Cell(0,5,utf8_decode("Régie de recettes v5 - 2020 - Hugo BILQUART pour [__________]"),0,0,'L',0);
 
 			$this->Cell(0,5,utf8_decode('Généré le '.date("d/m/Y, H:i")),0,1,'R',0);
 
@@ -183,7 +184,7 @@
 		function Header()
 		{
 			if($this->page == 1) {
-				$this->Image('images/logo_republique.png',10,15,26.6,15.7,'PNG');
+				$this->Image('../img/docs/logo.png',10,15,26.6,15.7,'PNG');
 
 				$this->SetFont('Arial','B',10);
 				$this->Text(120,15,utf8_decode(' - '.str_replace('_',' ',$_GET['objet']).' - '));
@@ -252,11 +253,12 @@
 
 			$this->SetFont('Arial','I','8');
 
-			$this->Cell(0,5,'⬜⬜ ⬜⬜⬜ ⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜',0,0,'L',0);
+			$this->Cell(0,5,'[_____________________________________________________________________________]',0,0,'L',0);
+
 
 			$this->Cell(0,5,utf8_decode('Généré le '.date("d/m/Y, H:i")),0,1,'R',0);
 
-			$this->Cell(0,5,utf8_decode("Régie de recettes v5 - 2020 - Hugo BILQUART pour ⬜⬜ ⬜⬜⬜"),0,0,'L',0);			
+			$this->Cell(0,5,utf8_decode("Régie de recettes v5 - 2020 - Hugo BILQUART pour [__________]"),0,0,'L',0);		
 
 			$this->Cell(0,5,'page '.$this->page,0,1,'R',0);
 		}
@@ -337,7 +339,7 @@
 			$pdf->Cell(80,5,utf8_decode('Nombre de chèques :'),1,0,'C');
 			$pdf->Cell(40,5,utf8_decode($countTransactions),1,0,'C');
 			$pdf->Cell(20,5,'TOTAL :',1,0,'C');
-			$pdf->Cell(40,5,iconv("UTF-8", "CP1252", $countAmount['total'].' €'),1,1,'R');
+			$pdf->Cell(40,5,iconv("UTF-8", "CP1252", $countAmount.' €'),1,1,'R');
 	
 			$pdf->Ln(5);	
 	
@@ -395,9 +397,9 @@
 			$pdf->SetFont('Arial','BI',10);
 	
 			$pdf->Cell(20,5,'TOTAL :',1,0,'C');
-			$pdf->Cell(40,5,iconv("UTF-8", "CP1252", str_replace('.',',',$countAmount['total']).' €'),1,0,'R');
+			$pdf->Cell(40,5,iconv("UTF-8", "CP1252", str_replace('.',',',$countAmount).' €'),1,0,'R');
 	
-			$pdf->Output('I',utf8_decode("Bordereau XX - Infographie - ".$countAmount['total']." € E $date"));
+			$pdf->Output('I',utf8_decode("Bordereau XX - Infographie - ".$countAmount." € E $date"));
 		}
 		//FIN RECAP CHEQUE
 	}

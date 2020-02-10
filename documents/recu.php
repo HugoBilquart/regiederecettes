@@ -102,9 +102,9 @@
 
 				$pdf->MultiCell(0,10,utf8_decode('Reçu 
 N° '.$tab['id'].''),1,'L',0);
-				$pdf->Image('images/logo.png',50,13+($i*100),26.6,15.7,'PNG');
-				$pdf->Image('images/logo2.png',85,13+($i*100),60,15.7,'PNG');
-				$pdf->Image('images/carre_blanc.png',180,10+($i*100),20,20,'PNG');
+				$pdf->Image('../img/docs/logo.png',50,13+($i*100),26.6,15.7,'PNG');
+				$pdf->Image('../img/docs/logo2.png',85,13+($i*100),60,15.7,'PNG');
+				$pdf->Image('../img/docs/carre_blanc.png',180,10+($i*100),20,20,'PNG');
 				$pdf->Ln(0);
 
 				$pdf->MultiCell(0,10,utf8_decode("Montant total 			
@@ -153,7 +153,7 @@ N° '.$tab['id'].''),1,'L',0);
 
 				$pdf->Ln(5);
 
-				$pdf->Image('images/ligne_decoupe.png',-50,100+($i*100),280,0.5,'PNG');
+				$pdf->Image('../img/docs/ligne_decoupe.png',-50,100+($i*100),280,0.5,'PNG');
 			
 				$pdf->Ln(5);
 			}
