@@ -31,6 +31,8 @@ de l’établissement et pouvoir être intégré facilement à l’intranet.
 ### V5 :
 #### V5.0 : Stage formation ALIPTIC
 - Changement de la charte graphique pour s'adapter au nouvel intranet (bootstrap, contrastes)
+- Accès a certaines fonctionnalités selon la fonction de l'utilisateur
+- L'utilisateur ne peut saisir que certains types de transactions (objet) selon sa fonction (indiqué sur la page d'accueil)
 - Création de récapitulatif différent selon le moyen de paiement
 - Utilisation d'un fichier texte pour les étudiants à la place de la base LDAP
 
@@ -41,3 +43,6 @@ de l’établissement et pouvoir être intégré facilement à l’intranet.
 
 ## Notes
 - Génération de nom/prenom aleatoire pour de faux étudiants : https://fr.fakenamegenerator.com/
+
+- Noms : Indiqués dans la base
+- MDP : regiederecettes87
