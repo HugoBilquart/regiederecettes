@@ -10,7 +10,7 @@
     }
     
     function redirectToIndex() {
-		$rootFile = '/regiederecettesreview/index.php';
+		$rootFile = '/regiederecettes/index.php';
 		echo '<script>window.location = "'.$rootFile.'"</script>';
 	}
 
