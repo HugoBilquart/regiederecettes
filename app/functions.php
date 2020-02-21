@@ -7,94 +7,12 @@
 		else {
 			echo '<p class="loginFailed">//Database connection... FAILED';
 		}
-	}
-
-	function fetchTable($req) {
-		$db = DBConnection();
-		$results = $db->query($req);	
-		echo '<table class="results_table" id="results_table" name="results_table"><tr>';
-		echo "	<th class='results_table_index index_id'><a href=".redirectURL('id')." title='Trier par N°'>N°</a></th>
-				<th class='results_table_index'><a href=".redirectURL('nom')." title='Trier par nom d`étudiant'>Nom</a></th>
-				<th class='results_table_index'><a href=".redirectURL('objet')." title='Trier par objet de transaction'>Objet</a></th>
-				<th class='results_table_index'><a href=".redirectURL('moyen')." title='Trier par moyen de paiement'>Moyen de paiement</a></th>
-				<th class='results_table_index'><a href=".redirectURL('montant')." title='Trier par montant'>Montant</a></th>
-				<th class='results_table_index'><a href=".redirectURL('statut')." title='Trier par statut'>Statut</a></th>";
-		echo '</tr>';
-        $tab = $results->fetchAll(PDO::FETCH_ASSOC);
-        if($tab) {
-            $i = 1;
-            foreach ($tab as $key => $value) {
-                echo '<tr id="'.$tab[$key]['id'].'" class="results_table_result" name="'.$i.'">
-                        <td class="id_area">'.$tab[$key]['id'].'</td>
-                        <td>'.$tab[$key]['nom'].'</td>';
-                        if($tab[$key]['objet'] == "Hébergements") {
-                            echo '<td>'.$tab[$key]['objet'].' ( '.$tab[$key]['date_arrivee'].' → '.$tab[$key]['date_depart'].' )</td>';
-                        }
-                        else {
-                            echo '<td>'.$tab[$key]['objet'].'</td>';
-                        }
-                        echo '<td>'.$tab[$key]['moyen'].'</td>
-                        <td>'.$tab[$key]['montant'].' €</td>';
-                        switch ($tab[$key]['statut']) {
-                            case 'Validée':
-                                echo '<td>✔</td>';
-                                break;
-                            case 'Annulée':
-                                echo '<td>✖</td>';
-                                break;
-                            default:
-                                echo '<td>A traiter</td>';
-                                break;
-                        }
-                echo '</tr>';
-                $i++;
-            }
-        }
-        else {
-            echo '<tr><td colspan="6" class="empty_table">Aucune transaction trouvée</td></tr>';
-        }
-        echo '</table>';
-	}
-
-	function montantLettre($number) {
-
-		$convert = explode('.', $number);
-	    $num[17] = array('zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six', 'sept', 'huit',
-	                     'neuf', 'dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize');
-	                      
-	    $num[100] = array(20 => 'vingt', 30 => 'trente', 40 => 'quarante', 50 => 'cinquante',
-	                      60 => 'soixante', 70 => 'soixante-dix', 80 => 'quatre-vingt', 90 => 'quatre-vingt-dix');
-	                
-	    
-	    
-	    echo $chiffre;
-
-	    for($i = 0 ; $i < strlen($convert[0]) ; $i++) {
-	    	$chiffre[$i] = substr($convert[0], $i);
-	    	echo $chiffre[$i];	
-	    	echo ",";
-	    }
-
-
-	    //echo $convert[1];
-
-
-	        
-	return $number;
-
-	}
-
-    function optionsTable($req) {
-        $db = DBConnection();
-        $results = $db->query($req);
-        $tab = $results->fetchAll(PDO::FETCH_ASSOC);
-        //$i = 1;
-        foreach ($tab as $key => $value) {
-            echo '<option value="'.$tab[$key]['id'].'">N°'.$tab[$key]['id'].' | '.$tab[$key]['nom'].' - '.$tab[$key]['objet'].'</option>';
-            //$i++;
-        }
-
     }
+    
+    function redirectToIndex() {
+		$rootFile = '/regiederecettesreview/index.php';
+		echo '<script>window.location = "'.$rootFile.'"</script>';
+	}
 
     function redirectURL($orderby) {
         if(empty($_GET['traitee'])) {
@@ -341,6 +259,11 @@ function float2alpha($number)
         return $dec;
     else
         return "$entier euros et $dec centimes";
+}
+
+function moisEnLettres($date) {
+    $tabMois = array('Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Decembre');
+    return $tabMois[$date - 1];
 }
 
 function dateEnLettres($date) {

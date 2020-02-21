@@ -15,6 +15,7 @@
 			</div>
 			<br/>
 			<div class="row">
+				<!-- DEBUT Tableau des transactions -->
 				<table class="table table-bordered table-hover text-center" id="transactions">
 					<thead class="thead-dark">
 						<tr>
@@ -29,9 +30,11 @@
 					</thead>
 					<tbody>
 						<?php
-							//Statut de traitement
+							//Transactions à traiter
 							if($_GET['traitee'] == 0) {
+								//Trier par ...
 								if(!empty($_GET['orderby'])) {
+									//Décroissant si meme filtre selectionné
 									if(isset($_GET['desc'])) {
 										$requete = $connex_pdo->query('SELECT * FROM r_transactions WHERE statut = 0 ORDER BY '.$_GET['orderby'].' DESC');
 									}
@@ -43,6 +46,7 @@
 									$requete = $connex_pdo->query('SELECT * FROM r_transactions WHERE statut = 0');
 								}
 							}
+							//Transactions traitées
 							else if($_GET['traitee'] == 1) {
 								$requete = $connex_pdo->query('SELECT * FROM r_transactions WHERE statut = 1 OR statut = 2');
 								if(!empty($_GET['orderby'])) {
@@ -57,6 +61,7 @@
 									$requete = $connex_pdo->query('SELECT * FROM r_transactions WHERE statut = 1 OR statut = 2');
 								}
 							}
+							//Toutes les transactions
 							else {
 								$requete = $connex_pdo->query('SELECT * FROM r_transactions');
 							}
@@ -95,6 +100,7 @@
 											break;
 									}
 								?>
+								<!-- Transaction -->
 								<tr data-id='<?php echo $transactions[$key]['id']; ?>' data-statut="<?php echo $transactions[$key]['statut']; ?>">
 									<td><?php echo $transactions[$key]['id']; ?></td>
 									<td><?php echo date('d/m/Y',strtotime($transactions[$key]['date_saisie'])); ?></td>
@@ -110,23 +116,24 @@
 						?>
 					</tbody>
 				</table>
+				<!-- FIN Tableau des transactions -->
 			</div>
 
 			<hr>
 			
+			<!-- RETOUR à la selection d'une rubrique -->
 			<div class="return text-center">
 				<a href="regiederecettes.php" class="btn btn-default">
 					<i class="fa fa-bars"></i> Retourner au menu Regie de recettes
 				</a>
 			</div>
-
 		<?php
 	}
 ?>
 
 <script>
+	//Redirige vers la page de traitement d'une transaction au clique sur une ligne
 	$('#transactions > tbody > tr').click(function() {
-		console.log('POP');
 		window.location.href = 'regiederecettes.php?action=1&n=' + $(this).data("id");
 	});
 </script>

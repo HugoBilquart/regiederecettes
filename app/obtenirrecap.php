@@ -1,5 +1,6 @@
 <h2>Obtenir un récapitulatif des transactions</h2>
 <p>Remplissez le formulaire pour obtenir le récapitulatif que vous souhaitez</p>
+<p class="indications">Seules les transactions validées apparaitront sur les récapitulatifs</p>
 
 <!-- DEBUT Formulaire -->
 <form id="form-document" name="recap" method="POST">
@@ -102,12 +103,14 @@
 
 <hr>
 
+<!-- RETOUR à la selection d'une rubrique -->
 <div class="return text-center">
     <a href="regiederecettes.php" class="btn btn-default">
         <i class="fa fa-bars"></i> Retourner au menu Regie de recettes
     </a>
 </div>
 
+<!-- JS pour configurer les selecteurs de date et modifier la page en conséquence -->
 <script>
     $('input[name="type"]').change(function(){
         $typeRecap = $(this).val();
@@ -241,3 +244,4 @@
         }
     });
 </script>
+<!-- FIN JS -->
