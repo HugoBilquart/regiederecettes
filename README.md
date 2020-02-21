@@ -40,6 +40,10 @@ de l’établissement et pouvoir être intégré facilement à l’intranet.
 - Utilisation d'une base de données SQLite au lieu de phpMyAdmin pour la mise en ligne
 - Isolation de l'application pour la mise en ligne (l'application est normalement intégrée à l'intranet)
 
+## Installation
+- Necessite les extensions SQLite pour PHP
+chown -R www-data:www-data ../regiederecettes
+chmod -R 777 db/regie.sqlite
 
 ## Notes
 - Génération de nom/prenom aleatoire pour de faux étudiants : https://fr.fakenamegenerator.com/
