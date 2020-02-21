@@ -1,44 +1,27 @@
 <?php session_start();
-include('functions.php');
+include('app/functions.php');
+
 if($_SESSION) {
     include('db_connex.php');
-
     //Fichier liste des Etudiants
     $file = fopen('listeEtudiants.txt','r');
 
-    $ts = '';
+    $req_count = $connex_pdo->query('SELECT count(*) + 1 AS count FROM r_transactions');
+    $numDisplay = $req_count->fetchColumn();
+
+    if($numDisplay < 10) {
+        $numDisplay = '00'.$numDisplay;
+    }
+    else if($numDisplay < 100) {
+        $numDisplay = '0'.$numDisplay;
+    }
+
 
     if($_POST) {
-        $req_count = $connex_pdo->query('SELECT count(*) + 1 AS count FROM r_transactions');
-        $reponse_count = $req_count->fetch();
-
-
-        $num = $reponse_count['count'];
-
-        
-        if($num < 10) {
-            $numDisplay = '00'.$num;
-        }
-        else if($num < 100) {
-            $numDisplay = '0'.$num;
-        }
-
-        $ts = 'Soumise le '.date('d/m/Y \à H:i');
+        $ts = 'Saisie le '.date('d/m/Y \à H:i');
     }
     else {
-        $req_count = $connex_pdo->query('SELECT count(*) + 1 AS count FROM r_transactions');
-        $reponse_count = $req_count->fetch();
-
-
-        $numDisplay = $reponse_count['count'];
-
-        
-        if($numDisplay < 10) {
-            $numDisplay = '00'.$reponse_count['count'];
-        }
-        else if($numDisplay < 100) {
-            $numDisplay = '0'.$reponse_count['count'];
-        }
+        $ts = '';
     }
 }
 else {
@@ -46,9 +29,9 @@ else {
 }
 
 
-function createDate($value) {
+function createDate($date) {
     $tabMois = array('Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Decembre');
-    $newDateParts = explode(" ", $value);
+    $newDateParts = explode(" ", $date);
     $newDateMonth = array_search($newDateParts[1], $tabMois) + 1;
     if($newDateMonth < 10) $newDateMonth = '0'.$newDateMonth;
 
@@ -97,10 +80,11 @@ function createDate($value) {
                         <?php
                     }
                     else {
-                    ?>
+                        ?>
                         <p class="indications">Toute transaction incorrectement saisie ne pourra pas être prise en compte !</p>
                         <hr>
                         
+                        <!-- DEBUT Zone de traitement -->
                         <div class="form_part row">
                             <p class="form-part-title"><b>Informations sur la transaction</b></p>
                             <p><b>Transaction n°<?php echo $numDisplay; ?></b></p>
@@ -110,10 +94,10 @@ function createDate($value) {
                             <p><?php echo $ts; ?></p>
                             <?php
                                 if($_POST) {
-                                    if(empty($_POST['civ']) OR empty($_POST['etu']) OR empty($_POST['etu']) OR empty($_POST['objet']) OR empty($_POST['objet']) OR empty($_POST['type']) OR empty($_POST['montant'])) {
-                            ?>
-                                        <p class="failed">Erreur de saisie : La transaction n'a pas été saisie de manière conforme (civilité, nom, objet, type de paiement et montant)</p>
-                            <?php
+                                    if(empty($_POST['civ']) OR empty($_POST['etu']) OR empty($_POST['objet']) OR empty($_POST['objet']) OR empty($_POST['type']) OR empty($_POST['montant'])) {
+                                        ?>
+                                            <p class="failed">Erreur de saisie : La transaction n'a pas été saisie de manière conforme (civilité, nom, objet, type de paiement et montant)</p>
+                                        <?php
                                     }
                                     else {
                                         //Precision du paiement si paiement par chèque
@@ -137,18 +121,17 @@ function createDate($value) {
                                         if($_POST['objet'] == "Hébergements") {
                                             //Verification de la présence des dates d'hebergement
                                             if(empty($_POST['date1']) OR empty($_POST['date2'])) {
-                                ?>
-                                                <p class="failed">Erreur de saisie : Les dates d'hébergements n'ont pas été saisies</p>
-                                <?php
+                                                ?>
+                                                    <p class="failed">Erreur de saisie : Les dates d'hébergements n'ont pas été saisies</p>
+                                                <?php
                                             }
                                             else {
-                                ?>
-                                                <p class="success">La transaction est conformément saisie</p>
-                                <?php
+                                                ?>
+                                                    <p class="success">La transaction est conformément saisie</p>
+                                                <?php
                                                 $date1 = createDate($_POST['date1']);
                                                 $date2 = createDate($_POST['date2']);
-
-                                                $req = 'INSERT INTO r_transactions (`date_saisie`,`nom_agent`,`civ`,`nom`,`objet`,`date_arrivee`,`date_depart`,`type`,`paiement_detail`,`montant`) VALUES ("'.date("Y-m-d H:i:s").'","'.$_SESSION["nom"].'","'.$_POST["civ"].'","'.$_POST["etu"].'","Hébergements","'.$date1.'","'.$date2.'","'.$_POST["type"].'","'.$detailPaiement.'","'.$_POST["montant"].'")';
+                                                $detailObjet = "";
                                             }
                                         }
                                         //Requête d'enregistrement d'un divers
@@ -160,38 +143,56 @@ function createDate($value) {
                                                 <?php
                                             }
                                             else {
-                                ?>
-                                                <p class="success">La transaction est conformément saisie</p>
-                                <?php
-
-                                                $req = 'INSERT INTO r_transactions (`date_saisie`,`nom_agent`,`civ`,`nom`,`objet`,`objet_detail`,`type`,`paiement_detail`,`montant`) VALUES ("'.date("Y-m-d H:i:s").'","'.$_SESSION["nom"].'","'.$_POST["civ"].'","'.$_POST["etu"].'","Autres Recettes","'.strip_tags($_POST['detail-objet']).'","'.$_POST["type"].'","'.$detailPaiement.'","'.$_POST["montant"].'")';
+                                                ?>
+                                                    <p class="success">La transaction est conformément saisie</p>
+                                                <?php
+                                                $date1 = '';
+                                                $date2 = '';
+                                                $detailObjet = strip_tags($_POST['detail-objet']);
                                             }
                                         }
                                         //Enregistrement d'un autre objet
                                         else {
-                                ?>
-                                            <p class="success">La transaction est conformément saisie</p>
-                                            
-                                <?php
-                                            $req = 'INSERT INTO r_transactions (`date_saisie`,`nom_agent`,`civ`,`nom`,`objet`,`type`,`paiement_detail`,`montant`) VALUES ("'.date("Y-m-d H:i:s").'","'.$_SESSION["nom"].'","'.$_POST["civ"].'","'.$_POST["etu"].'","'.$_POST["objet"].'","'.$_POST["type"].'","'.$detailPaiement.'","'.$_POST["montant"].'")';
+                                            ?>
+                                                <p class="success">La transaction est conformément saisie</p>
+                                            <?php
+                                            $date1 = '';
+                                            $date2 = '';
+                                            $detailObjet = '';
                                         }
 
-                                        //Execution de la requête d'enregistrement
-                                        $reponse = $connex_pdo->exec($req);
+                                        //Enregistrement de la transaction
+                                        $connex_pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                        $req_transaction = $connex_pdo->prepare("INSERT INTO r_transactions (`date_saisie`,`nom_agent`,`civ`,`nom`,`objet`,`objet_detail`,`date_arrivee`,`date_depart`,`type`,`paiement_detail`,`montant`) VALUES (:dateSaisie,:agent,:civ,:nom,:objet,:objetDetail,:dateArrivee,:dateDepart,:paiement,:paiementDetail,:montant)");
+                                        $reponse = $req_transaction->execute(array(
+                                            ":dateSaisie" => date("Y-m-d H:i:s"),
+                                            ":agent" => $_SESSION['nom'],
+                                            ":civ" => $_POST['civ'],
+                                            ":nom" => $_POST['etu'],
+                                            ":objet" => $_POST['objet'],
+                                            ":objetDetail" => $detailObjet,
+                                            ":dateArrivee" => $date1,
+                                            ":dateDepart" => $date2,
+                                            ":paiement" => $_POST['type'],
+                                            ":paiementDetail" => $detailPaiement,
+                                            ":montant" => $_POST['montant']
+                                        ));
+                                        //Confirmation
                                         if($reponse) {
-                            ?>
-                                            <p class="success">Transaction enregistrée avec succès.</p>
-                            <?php
+                                            ?>
+                                                <p class="success">Transaction enregistrée avec succès.</p>
+                                            <?php
                                         }
                                         else { 
-                            ?> 
-                                            <p class="failed">Echec de l'enregistrement de la transaction</p>
-                            <?php
+                                            ?> 
+                                                <p class="failed">Echec de l'enregistrement de la transaction</p>
+                                            <?php
                                         }
                                     }
                                 }
                             ?>
                         </div>
+                        <!-- FIN Zone de traitement -->
 
                         <br/>
                         

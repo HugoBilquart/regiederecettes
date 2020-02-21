@@ -1,7 +1,5 @@
 <?php session_start();
-    include('functions.php');
     include('app/functions.php');
-    //include('regie/functions.php');
     if($_SESSION) {
         if (isset($_SESSION['id']))   // si valeur dans sessions alors on affiche la page
         {
@@ -50,13 +48,16 @@
                         <p>Gestion des transactions et génération de documents</p>
                         <hr>
                         <?php
+                            //Verification d'acces
                             if($_SESSION['a_regie'] != 1) {
                         ?>
                                 <p class="failed">Vous ne pouvez pas accéder à cette page.</p>
                         <?php
                             }
                             else if(!isset($_GET['action'])) {
+                                //Si aucune rubrique selectionnée
                         ?>
+                                <!-- DEBUT Selection de la rubrique -->
                                 <h2>Que voulez vous faire ?</h2>
                                 <table class="regie_tableau">
                                     <tr>
@@ -86,9 +87,12 @@
                                         </td>
                                     </tr>
                                 </table>
+                                <!-- FIN Selection de la rubrique -->
                         <?php
                             }
                             else {
+                                //Si rubrique selectionnée
+                                //Affichage de la rubrique en fonction du choix
                                 switch ($_GET['action']) {
                                     case 1:
                                         include('app/results.php');
@@ -113,11 +117,12 @@
 
         </div>
 
-            <!-- js pour le menu -->
+        <!-- JS pour selecteurs de date -->
         <script src="dateheureselecteur/bootstrap.min.js"></script>
         <script src="dateheureselecteur/bootstrap-datetimepicker.js"></script>
         <script src="dateheureselecteur/bootstrap-datetimepicker.fr.js"></script>
         <script>
+        // DEBUT JS pour configurer les selecteurs de date
             $('.form_datetime').datetimepicker({
                 language:  'fr',
                 weekStart: 1,
@@ -184,14 +189,12 @@
                 minView: 4,
                 forceParse: 0,
             };
+        // FIN JS pour configurer les selecteurs de date
 
-
-
+        // DEBUT Recherche de document
             $('#search').click(function(){
                 $('#results-area').show();
 
-                //$type = $('input[name="type"]:checked').val();
-                //$type = $('#form-document').attr('name')
                 switch ($('#form-document').attr('name')) {
                     case 'recu':
                         $type = 1;
@@ -254,10 +257,6 @@
                     }
                 } 
             });
-
-            function getRecap($type,$date,$periode) {
-                console.log('Pqeruigsvfdo');
-                
-            }
+        // FIN Recherche de document
         </script>
     </body>

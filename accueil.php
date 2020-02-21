@@ -1,6 +1,5 @@
 <?php session_start();
-    include('functions.php');
-    //include('regie/functions.php');
+    include('app/functions.php');
     if($_SESSION) {
         if (isset($_SESSION['id']))   // si valeur dans sessions alors on affiche la page
         {

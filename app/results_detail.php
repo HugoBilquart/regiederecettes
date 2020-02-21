@@ -1,5 +1,6 @@
 <?php 
     if($_POST) {
+        //Traitement de la transaction, on modifie le statut et on ajoute les informations de traitement
         if(isset($_POST['traitement'])) {
             switch ($_POST['traitement']) {
                 case 'Valider':
@@ -19,7 +20,9 @@
                 ":commentaire" => $_POST['commentaire'],
                 ":id" => $_GET['n']
             ));
+            $requete_traitement->closeCursor();
         }
+        //Demande de rectification, on modifie le statut puis on efface la date, le nom et le commentaire 
         else if(isset($_POST['rectifier'])) {
             $requete_traitement = $connex_pdo->prepare('UPDATE r_transactions SET statut = :statut, nom_traitement = :nom_traitement, date_traitement = :date_traitement ,commentaire = :commentaire WHERE id = :id');
             $requete_traitement->execute(array(
@@ -29,12 +32,15 @@
                 ":commentaire" => '',
                 ":id" => $_GET['n']
             ));
+            $requete_traitement->closeCursor();
         }
         
     }
 ?>
 
+<!-- DEBUT Formulaire -->
 <form method="POST" action="regiederecettes.php?action=1&n=<?php echo $_GET['n']; ?>">
+    <!-- DEBUT Infos de la transaction -->
     <div class="form_part row" id="transaction">
         <p class="form-part-title text-center"><b>Informations de la transaction</b></p>
         <br/>
@@ -113,6 +119,7 @@
 
                 <?php
                     //Si la transaction est traitée
+                    //Afficher les informations de traitement (statut,date,nom,commentaire)
                     if($transaction['statut'] > 0) {
                         switch ($transaction['statut']) {
                             case 1:
@@ -140,10 +147,15 @@
         ?>
 
     </div>
+    <!-- FIN Infos de la transaction -->
+
     <br/>
+
+    <!-- DEBUT Traitement de la transaction -->
     <div class="form_part row" id="transaction-traitement">
         <p class="form-part-title text-center"><b>Traitement</b></p>
         <?php 
+            //Si la transactions est traité, afficher le commentaire et le bouton pour rectifier 
             if($transaction['statut'] > 0) {
                 ?>
                     <div class="text-center col-sm-">
@@ -157,6 +169,7 @@
                     <p class="indications text-center">Si vous rectifiez une transaction, le commentaire, le nom et la date de traitement seront effacés</p>
                 <?php
             }
+            //Sinon, formulaire + boutons de traitement
             else {
                 ?>
                     <div class="text-center col-sm-" >
@@ -171,9 +184,10 @@
                 <?php
             }
         ?>
-
     </div>
+    <!-- FIN Traitement de la transaction -->
 </form>
+<!-- FIN Formulaire -->
 
 <hr>
 

@@ -1,8 +1,8 @@
 <h2>Génerer un reçu</h2>
 <p>Remplissez le formulaire pour obtenir un reçu</p>
+<p class="indications">Une transaction doit être validée pour en obtenir un reçu</p>
 
-<?php $file = fopen('listeEtudiants.txt','r'); ?>
-
+<!-- DEBUT Formulaire -->
 <form id="form-document" name="recu" method="POST">
     <div class="form_part">
         <p class="form-part-title"><b>Filtre</b></p>
@@ -19,6 +19,7 @@
         <datalist id="etudiants">
             <?php
                 //Liste des étudiants
+                $file = fopen('listeEtudiants.txt','r');
                 while(! feof($file)) {
                     $currentLine = fgets($file);
                     ?>
@@ -36,18 +37,22 @@
         <button type="button" class="btn btn-primary submit" id="search">Rechercher</button>
     </div>
 </form>
+<!-- FIN Formulaire -->
 
 <br/>
 
+<!-- DEBUT Resultats de la recherche -->
 <div class="form_part" id="results-area">
     <p class="form-part-title"><b>Résultats</b></p>
-    <div class="col-sm-" id="results">
+    <div id="results">
 
     </div>
 </div>
+<!-- FIN Resultats de la recherche -->
 
 <hr>
 
+<!-- RETOUR à la selection d'une rubrique -->
 <div class="return text-center">
     <a href="regiederecettes.php" class="btn btn-default">
         <i class="fa fa-bars"></i> Retourner au menu Regie de recettes

@@ -3,7 +3,6 @@
 <?php
     include('db_connex.php');
     include('app/functions.php');
-    include('functions.php');
 
             //Pas de type de document indiqué
             if(empty($_POST['type'])) {
@@ -144,7 +143,6 @@
                             //URL du recapitulatif
                             //Ajout de _ pour l'objet dans l'URL
                             $lien = $lien.'&objet='.str_replace(' ','_',$_POST['objet']).'&moyen='.$_POST['moyen_paiement'];
-                            //$lien = $lien.'&moyen='.$_POST['moyen_paiement'];
 
                             $reponse = $connex_pdo->query($req.' AND `statut` = 1');
                             $count = $reponse->fetchColumn();
