@@ -20,6 +20,7 @@
                 ":commentaire" => $_POST['commentaire'],
                 ":id" => $_GET['n']
             ));
+            $requete_traitement->closeCursor();
         }
         //Demande de rectification, on modifie le statut puis on efface la date, le nom et le commentaire 
         else if(isset($_POST['rectifier'])) {
@@ -31,6 +32,7 @@
                 ":commentaire" => '',
                 ":id" => $_GET['n']
             ));
+            $requete_traitement->closeCursor();
         }
         
     }
